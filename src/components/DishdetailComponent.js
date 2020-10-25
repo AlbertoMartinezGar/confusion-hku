@@ -27,7 +27,7 @@ class CommentForm extends Component{
 
     handleSubmit(values){
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render(){
@@ -47,11 +47,11 @@ class CommentForm extends Component{
                                         placeholder="Rating"
                                         className="form-control"                                        
                                         >
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                            <option>5</option>
                                     </Control.select>
                                 </Col>
                             </Row>
@@ -67,7 +67,7 @@ class CommentForm extends Component{
                                         />
                                     <Errors
                                         className="text-danger"
-                                        model=".name"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             minLength: 'Must be greater than 2 characters',
@@ -77,7 +77,7 @@ class CommentForm extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="lastname" md={12}>Comment</Label>
+                                <Label htmlFor="comment" md={12}>Comment</Label>
                                 <Col md={12}>
                                     <Control.textarea model=".comment" id="comment" name="comment"
                                         rows="6"
@@ -119,7 +119,7 @@ function RenderDish({dish}){
     }
 }
 
-function RenderComments({dishComments, addComment, dishId}){
+function RenderComments({dishComments, postComment, dishId}){
     if(dishComments == null){
         return(
             <div></div>
@@ -139,7 +139,7 @@ function RenderComments({dishComments, addComment, dishId}){
         
         return(<div>
                 {comments}
-                <CommentForm dishId={dishId} addComment={addComment}/>
+                <CommentForm dishId={dishId} postComment={postComment}/>
                 </div>);
     } 
 }
@@ -191,7 +191,7 @@ const DishDetail = (props) => {
                     <div className="col-12 col-md-5 m-1">
                         <h4>Comments</h4>
                         <RenderComments dishComments={props.comments}
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId={props.dish.id}/>
                     </div>
                 </div>
