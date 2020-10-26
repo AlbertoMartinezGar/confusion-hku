@@ -1,38 +1,57 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import RenderLider from './RenderLider';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Staagger } from 'react-animation-components';
 
+const RenderLider = (props) => {
+    if (props.isLoading){
+        return(
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if (props.errMess){
+        return(
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else
+        return (
+            <div key={props.leader.id} className="col-12 mt-5">
+            <Media tag="li">
+                <Media left middle>
+                    <Media object src={baseUrl + props.leader.image} alt={props.leader.name} />
+                </Media>
+                <Media body className="ml-5">
+                <Media heading>{props.leader.name}</Media>
+                <p>{props.leader.designation}</p>
+                <p>{props.leader.description}</p>
+                </Media>
+            </Media>
+            </div>
+        );  
+}
 
 function About(props) {
 
-    /*
-        THIS IS MY CODE FOR RENDERLIDER COMPONENT }
-        for what I understood we need to create a new component called RenderLider.js
-        
-        function RenderLider(props){
+    
+        const leaders = props.leaders.leaders.map((leader) => {
             return (
-                <div key={props.leader.id} className="col-12 mt-5">
-                <Media tag="li">
-                    <Media left middle>
-                        <Media object src={props.leader.image} alt={props.leader.name} />
-                    </Media>
-                    <Media body className="ml-5">
-                    <Media heading>{props.leader.name}</Media>
-                    <p>{props.leader.designation}</p>
-                    <p>{props.leader.description}</p>
-                    </Media>
-                </Media>
-                </div>
-            );      
-        }
-    */
-
-    const leaders = props.leaders.map((leader) => {
-        return (
-            <RenderLider leader={leader}/>
-        );
-    });
+                
+                    <RenderLider leader={leader}/>
+                
+            );
+        });
+    
 
     return(
         <div className="container">
@@ -88,11 +107,13 @@ function About(props) {
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
-                <div className="col-12">
-                    <Media list>
-                        {leaders}
-                    </Media>
-                </div>
+                <Fade in>
+                    <div className="col-12">
+                        <Media list>
+                            {leaders}
+                        </Media>
+                    </div>
+                </Fade>
             </div>
         </div>
     );
